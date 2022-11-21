@@ -1,12 +1,7 @@
 package com.example.profiladaptatif
 
-import android.graphics.ColorSpace
-import android.util.Log
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
@@ -14,6 +9,10 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MainViewModel : ViewModel() {
     val movies = MutableStateFlow<List<Movie>>(listOf())
+
+    val movie = MutableStateFlow(MovieDetail())
+
+    val series = MutableStateFlow<List<Serie>>(listOf())
 
     val apikey = "d2ee8f9a0abe429c115a40452040c23a"
 
@@ -26,6 +25,19 @@ class MainViewModel : ViewModel() {
     fun affichMovies(){
         viewModelScope.launch {
             movies.value = service.getFilmsRecents(apikey = apikey).results
+        }
+
+    }
+
+    fun detailMovie(id: String){
+        viewModelScope.launch {
+            movie.value = service.detailFilm(id, apikey)
+        }
+    }
+
+    fun affichSeries(){
+        viewModelScope.launch {
+            series.value = service.getSeries(apikey = apikey).results
         }
     }
 

@@ -19,13 +19,13 @@ import coil.compose.AsyncImage
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun Films(viewModel: MainViewModel, navController: NavController) {
-    val movies by viewModel.movies.collectAsState()
+fun Series(viewModel: MainViewModel, navController: NavController) {
+    val series by viewModel.series.collectAsState()
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Open))
 
     var recherche by rememberSaveable { mutableStateOf("") }
 
-    if (movies.isEmpty()) viewModel.affichMovies()
+    if (series.isEmpty()) viewModel.affichSeries()
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -37,19 +37,18 @@ fun Films(viewModel: MainViewModel, navController: NavController) {
 
             LazyVerticalGrid(columns = GridCells.Adaptive(128.dp),
                 content = {
-                    items(movies) { movie ->
+                    items(series) { serie ->
                         Card(
                             modifier = Modifier
                                 .padding(4.dp)
-                                .clickable { navController.navigate("detailFilm/${movie.id}") }
+                                .clickable { navController.navigate("detailFilm") }
                         ) {
                             Column() {
                                 AsyncImage(
-                                    model = "https://image.tmdb.org/t/p/w500/${movie.poster_path}",
+                                    model = "https://image.tmdb.org/t/p/w500/${serie.poster_path}",
                                     contentDescription = null
                                 )
-                                Text("${movie.original_title}", fontSize = 15.sp, fontWeight = FontWeight.Bold)
-                                Text("${movie.release_date}")
+                                Text("${serie.name}", fontSize = 15.sp, fontWeight = FontWeight.Bold)
                             }
                         }
                     }

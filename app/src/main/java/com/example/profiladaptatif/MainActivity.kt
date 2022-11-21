@@ -22,6 +22,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.profiladaptatif.ui.theme.ProfilAdaptatifTheme
 
 class MainActivity : ComponentActivity() {
@@ -37,7 +38,13 @@ class MainActivity : ComponentActivity() {
             NavHost(navController = navController, startDestination = "home") {
                 composable("home") { Screen(windowSizeClass, navController) }
                 composable("listeFilms") { Films(viewmodel, navController) }
-                composable("series") { Films(viewmodel, navController) }
+                composable("detailFilm/{movieid}") {
+                    navBackStackEntry ->
+                    var id = navBackStackEntry.arguments?.getString("movieid")
+                    if (id != null){
+                        DetailFilm(viewmodel, navController, id) }
+                    }
+                composable("series") { Series(viewmodel, navController) }
                 composable("acteurs") { Films(viewmodel, navController) }
             }
 

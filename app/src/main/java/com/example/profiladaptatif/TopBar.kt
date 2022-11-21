@@ -19,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -31,7 +32,7 @@ fun TopBar(onSearch: (t:String) -> Unit){
     val keyboardController = LocalSoftwareKeyboardController.current
 
     if(state){
-    TopAppBar(title = { Text("TopAppBar") },
+    TopAppBar(title = { Text("Fav'app") },
         actions = {
             IconButton(onClick = { state = !state }) {
                 Image(
@@ -72,3 +73,21 @@ fun TopBar(onSearch: (t:String) -> Unit){
         )
     }
 }
+
+@Composable
+fun TopBarNom(nom: String, navController: NavController){
+
+    TopAppBar(title = {
+        IconButton(onClick = { navController.navigateUp() }) {
+            Image(
+                painterResource(R.drawable.left),
+                contentDescription = "Left",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(25.dp)
+                    .fillMaxSize()
+            )
+        }
+            Text(nom)
+}
+    )}

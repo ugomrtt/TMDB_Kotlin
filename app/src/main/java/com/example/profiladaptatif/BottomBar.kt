@@ -35,7 +35,7 @@ fun BottomBar(navController: NavController){
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Image(
                     painterResource(R.drawable.series),
-                    contentDescription = "films",
+                    contentDescription = "series",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .size(25.dp)
