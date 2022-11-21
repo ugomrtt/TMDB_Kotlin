@@ -12,6 +12,8 @@ class MainViewModel : ViewModel() {
 
     val movie = MutableStateFlow(MovieDetail())
 
+    val credits = MutableStateFlow(Credits())
+
     val series = MutableStateFlow<List<Serie>>(listOf())
 
     val apikey = "d2ee8f9a0abe429c115a40452040c23a"
@@ -32,6 +34,11 @@ class MainViewModel : ViewModel() {
     fun detailMovie(id: String){
         viewModelScope.launch {
             movie.value = service.detailFilm(id, apikey)
+        }
+    }
+    fun creditMovie(id: String){
+        viewModelScope.launch {
+            credits.value = service.creditFilm(id, apikey)
         }
     }
 

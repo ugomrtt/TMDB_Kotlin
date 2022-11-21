@@ -2,11 +2,9 @@ package com.example.profiladaptatif
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
@@ -14,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,9 +25,10 @@ fun DetailFilm(viewModel: MainViewModel, navController: NavController, movieid: 
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Open))
 
     val movie by viewModel.movie.collectAsState()
-
     viewModel.detailMovie(movieid)
 
+    val credits = viewModel.credits.collectAsState()
+    viewModel.creditMovie(movieid)
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -37,32 +37,43 @@ fun DetailFilm(viewModel: MainViewModel, navController: NavController, movieid: 
 
         },
         content = {
-            Column() {
-                Text("${movie.original_title}", fontSize = 25.sp, fontWeight = FontWeight.Bold)
-                AsyncImage(
-                    model = "https://image.tmdb.org/t/p/w500/${movie.backdrop_path}",
-                    contentDescription = null,
-                    contentScale = ContentScale.FillWidth,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Row() {
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(200.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                item(span = { GridItemSpan(2) }) {
+                    Text("${movie.original_title}", fontSize = 25.sp, fontWeight = FontWeight.Bold)
                     AsyncImage(
-                        model = "https://image.tmdb.org/t/p/w500/${movie.poster_path}",
-                        contentDescription = null
+                        model = "https://image.tmdb.org/t/p/w500/${movie.backdrop_path}",
+                        contentDescription = null,
+                        contentScale = ContentScale.FillWidth,
+                        modifier = Modifier.fillMaxWidth()
                     )
-                    Column() {
-                        Text("${movie.release_date}")
-                        LazyVerticalGrid(columns = GridCells.Adaptive(128.dp),
-                            content = {
-                                items(movie.genres) { genre ->
-                                    Text("${movie.genres}")
-                                }
-                            }
+                    Spacer(modifier = Modifier.height(10.dp))
+                }
+                item(span = { GridItemSpan(2) }) {
+                    Row() {
+                        AsyncImage(
+                            model = "https://image.tmdb.org/t/p/w500/${movie.poster_path}",
+                            contentDescription = null,
                         )
+                        Spacer(modifier = Modifier.width(45.dp))
+                        Column() {
+                            Text("${movie.release_date}", fontStyle = FontStyle.Italic)
+                            movie.genres.forEach {
+                                Text("${it.name} &")
+                            }
+                        }
+                    }
+                }
+                item(span = { GridItemSpan(2) }) {
+                    Column() {
+                        Text("Synopsis", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                        Text("${credits}")
                     }
                 }
             }
-                  },
+        },
         bottomBar = {
             BottomBar(navController)
         }
