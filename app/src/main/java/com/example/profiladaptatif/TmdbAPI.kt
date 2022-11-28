@@ -20,4 +20,13 @@ interface TmdbAPI {
 
     @GET("trending/tv/week")
     suspend fun getSeries(@Query("api_key") apikey: String) : Series
+
+    @GET("tv/{tv_id}")
+    suspend fun detailSerie(@Path("tv_id") movieid: String, @Query("api_key") apikey: String) : Serie
+
+    @GET("tv/{tv_id}/credits")
+    suspend fun creditSerie(@Path("tv_id") movieid: String, @Query("api_key") apikey: String) : CreditsSerie
+
+    @GET("trending/person/week")
+    suspend fun getActeurs(@Query("api_key") apikey: String) : Acteur
 }

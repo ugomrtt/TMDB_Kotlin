@@ -24,7 +24,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.profiladaptatif.ui.theme.ProfilAdaptatifTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,8 +46,14 @@ class MainActivity : ComponentActivity() {
                     if (id != null){
                         DetailFilm(viewmodel, navController, id) }
                     }
+                composable("detailSerie/{serieid}") {
+                    navBackStackEntry ->
+                    var id = navBackStackEntry.arguments?.getString("serieid")
+                    if (id != null){
+                        DetailSerie(viewmodel, navController, id) }
+                    }
                 composable("series") { Series(viewmodel, navController) }
-                composable("acteurs") { Films(viewmodel, navController) }
+                composable("acteurs") { Acteurs(viewmodel, navController) }
             }
 
 

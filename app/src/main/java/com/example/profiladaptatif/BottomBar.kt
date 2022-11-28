@@ -1,9 +1,7 @@
 package com.example.profiladaptatif
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.BottomAppBar
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -18,6 +16,7 @@ import androidx.navigation.NavController
 @Composable
 fun BottomBar(navController: NavController){
     BottomAppBar() {
+        Spacer(modifier = Modifier.width(10.dp))
         Button(onClick = { navController.navigate("listeFilms") }) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Image(
@@ -31,6 +30,7 @@ fun BottomBar(navController: NavController){
                 Text(text = "Films")
             }
         }
+        Spacer(modifier = Modifier.width(15.dp))
         Button(onClick = { navController.navigate("series") }) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Image(
@@ -44,6 +44,7 @@ fun BottomBar(navController: NavController){
                 Text(text = "Series")
             }
         }
+        Spacer(modifier = Modifier.width(15.dp))
         Button(onClick = { navController.navigate("acteurs") }) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Image(
@@ -57,5 +58,6 @@ fun BottomBar(navController: NavController){
                 Text(text = "Acteurs")
             }
         }
+        Spacer(modifier = Modifier.width(10.dp))
     }
 }

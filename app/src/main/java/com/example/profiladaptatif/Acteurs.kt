@@ -19,13 +19,12 @@ import coil.compose.AsyncImage
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun Series(viewModel: MainViewModel, navController: NavController) {
-    val series by viewModel.series.collectAsState()
+fun Acteurs(viewModel: MainViewModel, navController: NavController) {
+    val acteurs by viewModel.acteurs.collectAsState()
+
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Open))
 
-    var recherche by rememberSaveable { mutableStateOf("") }
-
-    if (series.isEmpty()) viewModel.affichSeries()
+    if (acteurs.isEmpty()) viewModel.affichActeurs()
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -37,18 +36,17 @@ fun Series(viewModel: MainViewModel, navController: NavController) {
 
             LazyVerticalGrid(columns = GridCells.Adaptive(128.dp),
                 content = {
-                    items(series) { serie ->
+                    items(acteurs) { acteur ->
                         Card(
                             modifier = Modifier
                                 .padding(4.dp)
-                                .clickable { navController.navigate("detailSerie/${serie.id}") }
                         ) {
                             Column() {
                                 AsyncImage(
-                                    model = "https://image.tmdb.org/t/p/w500/${serie.poster_path}",
+                                    model = "https://image.tmdb.org/t/p/w500/${acteur.profile_path}",
                                     contentDescription = null
                                 )
-                                Text("${serie.name}", fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                                Text("${acteur.name}", fontSize = 15.sp, fontWeight = FontWeight.Bold)
                             }
                         }
                     }

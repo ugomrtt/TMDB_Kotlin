@@ -2,12 +2,15 @@ package com.example.profiladaptatif
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(private val repo: Repository) : ViewModel() {
     val movies = MutableStateFlow<List<Movie>>(listOf())
 
     val movie = MutableStateFlow(MovieDetail())
@@ -15,6 +18,12 @@ class MainViewModel : ViewModel() {
     val credits = MutableStateFlow(Credits())
 
     val series = MutableStateFlow<List<Serie>>(listOf())
+
+    val creditSerie = MutableStateFlow(CreditsSerie())
+
+    val serie = MutableStateFlow(Serie())
+
+    val acteurs = MutableStateFlow<List<Result>>(listOf())
 
     val apikey = "d2ee8f9a0abe429c115a40452040c23a"
 
@@ -26,9 +35,8 @@ class MainViewModel : ViewModel() {
 
     fun affichMovies(){
         viewModelScope.launch {
-            movies.value = service.getFilmsRecents(apikey = apikey).results
+            movies.value = repo.lastMovies()
         }
-
     }
 
     fun detailMovie(id: String){
@@ -44,13 +52,30 @@ class MainViewModel : ViewModel() {
 
     fun affichSeries(){
         viewModelScope.launch {
-            series.value = service.getSeries(apikey = apikey).results
+            series.value = repo.lastSeries()
+        }
+    }
+
+    fun detailSerie(id: String){
+        viewModelScope.launch {
+            serie.value = service.detailSerie(id, apikey)
+        }
+    }
+    fun creditSerie(id: String){
+        viewModelScope.launch {
+            creditSerie.value = service.creditSerie(id, apikey)
         }
     }
 
     fun searchMovies(search:String){
         viewModelScope.launch {
             movies.value = service.searchFilm(apikey = apikey, searchtext = search).results
+        }
+    }
+
+    fun affichActeurs(){
+        viewModelScope.launch {
+            acteurs.value = repo.lastActors()
         }
     }
 

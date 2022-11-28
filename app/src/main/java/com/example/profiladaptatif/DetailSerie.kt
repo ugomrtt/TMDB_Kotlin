@@ -21,19 +21,19 @@ import coil.compose.AsyncImage
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun DetailFilm(viewModel: MainViewModel, navController: NavController, movieid: String) {
+fun DetailSerie(viewModel: MainViewModel, navController: NavController, serieid: String) {
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Open))
 
-    val movie by viewModel.movie.collectAsState()
-    viewModel.detailMovie(movieid)
+    val serie by viewModel.serie.collectAsState()
+    viewModel.detailSerie(serieid)
 
-    val credits = viewModel.credits.collectAsState()
-    viewModel.creditMovie(movieid)
+    val credits = viewModel.creditSerie.collectAsState()
+    viewModel.creditSerie(serieid)
 
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            TopBarNom(movie.original_title, navController)
+            TopBarNom(serie.name, navController)
 
         },
         content = {
@@ -42,9 +42,9 @@ fun DetailFilm(viewModel: MainViewModel, navController: NavController, movieid: 
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 item(span = { GridItemSpan(2) }) {
-                    Text("${movie.original_title}", fontSize = 25.sp, fontWeight = FontWeight.Bold)
+                    Text("${serie.name}", fontSize = 25.sp, fontWeight = FontWeight.Bold)
                     AsyncImage(
-                        model = "https://image.tmdb.org/t/p/w500/${movie.backdrop_path}",
+                        model = "https://image.tmdb.org/t/p/w500/${serie.backdrop_path}",
                         contentDescription = null,
                         contentScale = ContentScale.FillWidth,
                         modifier = Modifier.fillMaxWidth()
@@ -54,13 +54,13 @@ fun DetailFilm(viewModel: MainViewModel, navController: NavController, movieid: 
                 item(span = { GridItemSpan(2) }) {
                     Row() {
                         AsyncImage(
-                            model = "https://image.tmdb.org/t/p/w500/${movie.poster_path}",
+                            model = "https://image.tmdb.org/t/p/w500/${serie.poster_path}",
                             contentDescription = null,
                         )
                         Spacer(modifier = Modifier.width(45.dp))
                         Column() {
-                            Text("${movie.release_date}", fontStyle = FontStyle.Italic)
-                            movie.genres.forEach {
+                            Text("${serie.first_air_date}", fontStyle = FontStyle.Italic)
+                            serie.genres.forEach {
                                 Text("${it.name} &")
                             }
                         }
@@ -69,25 +69,25 @@ fun DetailFilm(viewModel: MainViewModel, navController: NavController, movieid: 
                 item(span = { GridItemSpan(2) }) {
                     Column() {
                         Text("Synopsis", fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                        Text("${movie.overview}")
+                        Text("${serie.overview}")
                         Text("Têtes d'affiche", fontWeight = FontWeight.Bold, fontSize = 20.sp)
                     }
                 }
-                        items(credits.value.cast) { credit ->
-                            Card(
-                                modifier = Modifier
-                                    .padding(6.dp)
-                            ) {
-                                Column() {
-                                    AsyncImage(
-                                        model = "https://image.tmdb.org/t/p/w500/${credit.profile_path}",
-                                        contentDescription = null
-                                    )
-                                    Text("${credit.name}", fontSize = 15.sp, fontWeight = FontWeight.Bold)
-                                    Text("${credit.character}", fontSize = 13.sp, fontWeight = FontWeight.Light)
-                                }
-                            }
+                items(credits.value.cast) { credit ->
+                    Card(
+                        modifier = Modifier
+                            .padding(6.dp)
+                    ) {
+                        Column() {
+                            AsyncImage(
+                                model = "https://image.tmdb.org/t/p/w500/${credit.profile_path}",
+                                contentDescription = null
+                            )
+                            Text("${credit.name}", fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                            Text("${credit.character}", fontSize = 13.sp, fontWeight = FontWeight.Light)
                         }
+                    }
+                }
             }
         },
         bottomBar = {
