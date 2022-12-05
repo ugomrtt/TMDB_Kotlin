@@ -8,6 +8,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -30,7 +32,7 @@ fun Films(viewModel: MainViewModel, navController: NavController) {
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            TopBar({it -> viewModel.searchMovies(it)})
+            TopBar({ it -> viewModel.searchMovies(it) })
 
         },
         content = {
@@ -48,7 +50,11 @@ fun Films(viewModel: MainViewModel, navController: NavController) {
                                     model = "https://image.tmdb.org/t/p/w500/${movie.poster_path}",
                                     contentDescription = null
                                 )
-                                Text("${movie.original_title}", fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                                Text(
+                                    "${movie.original_title}",
+                                    fontSize = 15.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
                                 Text("${movie.release_date}")
                             }
                         }

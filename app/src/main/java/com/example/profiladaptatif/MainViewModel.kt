@@ -41,12 +41,12 @@ class MainViewModel @Inject constructor(private val repo: Repository) : ViewMode
 
     fun detailMovie(id: String){
         viewModelScope.launch {
-            movie.value = service.detailFilm(id, apikey)
+            movie.value = repo.detailFilm(id)
         }
     }
     fun creditMovie(id: String){
         viewModelScope.launch {
-            credits.value = service.creditFilm(id, apikey)
+            credits.value = repo.creditFilm(id)
         }
     }
 
@@ -58,12 +58,12 @@ class MainViewModel @Inject constructor(private val repo: Repository) : ViewMode
 
     fun detailSerie(id: String){
         viewModelScope.launch {
-            serie.value = service.detailSerie(id, apikey)
+            serie.value = repo.detailSerie(id)
         }
     }
     fun creditSerie(id: String){
         viewModelScope.launch {
-            creditSerie.value = service.creditSerie(id, apikey)
+            creditSerie.value = repo.creditSerie(id)
         }
     }
 

@@ -43,7 +43,7 @@ fun Screen(classes: WindowSizeClass, navController: NavController) {
             ) {
                 Home()
                 Contacts()
-                Button(onClick = { /*TODO*/ }) {
+                Button(onClick = { navController.navigate("listeFilms") }) {
                     Text(text = "Démarrer")
                 }
             }

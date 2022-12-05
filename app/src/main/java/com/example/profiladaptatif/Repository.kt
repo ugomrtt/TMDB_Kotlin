@@ -9,6 +9,10 @@ class Repository(private val tmdbAPI: TmdbAPI) {
     suspend fun lastActors() = tmdbAPI.getActeurs(apikey).results
 
 
-    suspend fun detailFilm() = tmdbAPI.detailFilm(apikey, id).results
 
+    suspend fun detailFilm(id: String) = tmdbAPI.detailFilm(id, apikey)
+    suspend fun detailSerie(id: String) = tmdbAPI.detailSerie(id, apikey)
+
+    suspend fun creditFilm(id: String) = tmdbAPI.creditFilm(id, apikey)
+    suspend fun creditSerie(id: String) = tmdbAPI.creditSerie(id, apikey)
 }
