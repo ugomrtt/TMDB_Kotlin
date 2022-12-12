@@ -1,9 +1,10 @@
-package com.example.profiladaptatif.hilt
+package com.example.profiladaptatif
 
 import android.content.Context
 import androidx.room.Room
-import com.example.myapplication.*
-import com.example.profiladaptatif.Converters
+import com.example.myapplication.ActeurDao
+import com.example.myapplication.FilmDao
+import com.example.myapplication.SerieDao
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -14,40 +15,70 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
+
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
     @Singleton
     @Provides
-    fun providerConverters(): Converters {
-        return Converters()
+    fun providerConverters() : Converters {
+        val moshi = Moshi.Builder().build()
+        // remplacer ici Converters, par le nom que vous avez donné à votre classe
+        // convertisseur de types.
+        return Converters(moshi)
     }
 
     @Singleton
     @Provides
-    fun provideDB(@ApplicationContext context: Context): FilmDao {
+    fun provideDb(@ApplicationContext context: Context)
+            : FilmDao {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java, "database-name"
         )
-            .addTypeConverter(Converters())
+            .addTypeConverter(Converters(Moshi.Builder().build()))
             .fallbackToDestructiveMigration()
             .build().filmDao()
     }
 
-
-
+    @Singleton
+    @Provides
+    fun provideDbSerie(@ApplicationContext context: Context)
+            : SerieDao {
+        return Room.databaseBuilder(
+            context,
+            AppDatabase::class.java, "database-name"
+        )
+            .addTypeConverter(Converters(Moshi.Builder().build()))
+            .fallbackToDestructiveMigration()
+            .build().serieDao()
+    }
+    @Singleton
+    @Provides
+    fun provideDbActeur(@ApplicationContext context: Context)
+            : ActeurDao {
+        return Room.databaseBuilder(
+            context,
+            AppDatabase::class.java, "database-name"
+        )
+            .addTypeConverter(Converters(Moshi.Builder().build()))
+            .fallbackToDestructiveMigration()
+            .build().acteurDao()
+    }
 
     @Singleton
     @Provides
-    fun provideTmdbApi() : TmdbAPI =
-        Retrofit.Builder()
+    fun provideTmdbApi() : TmdbAPI {
+        return Retrofit.Builder()
             .baseUrl("https://api.themoviedb.org/3/")
             .addConverterFactory(MoshiConverterFactory.create())
             .build().create(TmdbAPI::class.java)
+    }
 
     @Singleton
     @Provides
-    fun provideRepository(api: TmdbAPI, db: FilmDao, serieDB: SerieDao) =
-        Repository(api, db, serieDB)
+    fun provideRepository(api: TmdbAPI,dbFilm: FilmDao, dbSerie: SerieDao, dbActeur: ActeurDao): Repository {
+        return Repository(api, dbFilm, dbSerie, dbActeur)
+    }
 }

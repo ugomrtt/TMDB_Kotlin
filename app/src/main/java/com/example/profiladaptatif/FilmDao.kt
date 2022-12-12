@@ -15,5 +15,5 @@ interface FilmDao {
     suspend fun insertFilm(film: FilmEntity)
 
     @Query("DELETE FROM filmentity WHERE id = :id")
-    suspend fun deleteFilm(id: String)
+    suspend fun deleteFilm(id: kotlin.Int)
 }

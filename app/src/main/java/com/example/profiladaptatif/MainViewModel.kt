@@ -11,19 +11,22 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(private val repo: Repository) : ViewModel() {
+
     val movies = MutableStateFlow<List<Movie>>(listOf())
-
     val movie = MutableStateFlow(MovieDetail())
-
     val credits = MutableStateFlow(Credits())
+    val favMovies = MutableStateFlow<List<FilmEntity>>(listOf())
+
 
     val series = MutableStateFlow<List<Serie>>(listOf())
-
-    val creditSerie = MutableStateFlow(CreditsSerie())
-
     val serie = MutableStateFlow(Serie())
+    val creditSerie = MutableStateFlow(CreditsSerie())
+    val favSeries = MutableStateFlow<List<SerieEntity>>(listOf())
 
     val acteurs = MutableStateFlow<List<Result>>(listOf())
+    val favActeurs = MutableStateFlow<List<ActeurEntity>>(listOf())
+
+
 
     val apikey = "d2ee8f9a0abe429c115a40452040c23a"
 
@@ -36,6 +39,7 @@ class MainViewModel @Inject constructor(private val repo: Repository) : ViewMode
     fun affichMovies(){
         viewModelScope.launch {
             movies.value = repo.lastMovies()
+            affichFavFilm()
         }
     }
 
@@ -78,6 +82,148 @@ class MainViewModel @Inject constructor(private val repo: Repository) : ViewMode
             acteurs.value = repo.lastActors()
         }
     }
+
+    fun affichFavFilm(){
+        viewModelScope.launch {
+            favMovies.value = repo.getFavFilms()
+        }
+    }
+
+    fun affichFavSeries(){
+        viewModelScope.launch {
+            favSeries.value = repo.getFavSeries()
+        }
+    }
+
+    fun affichFavActeurs(){
+        viewModelScope.launch {
+            favActeurs.value = repo.gatFavActeurs()
+        }
+    }
+
+    fun addFavMovie(movie: Movie){
+        viewModelScope.launch {
+            repo.isFavFilm(movie);
+            val favMovies = repo.getFavFilms()
+            val newListMovies = mutableListOf<Movie>()
+            movies.value.map { movie ->
+                if(favMovies.any{isFavMovie ->
+                        isFavMovie.id == movie.id.toString();
+                    }){
+                    val newFavMovie = movie.copy(isFav = true)
+                    newListMovies.add(newFavMovie)
+                }else{
+                    newListMovies.add(movie)
+                }
+            }
+            movies.value = newListMovies
+            affichFavFilm()
+        }
+    }
+
+    fun deleteFavMovie(movie: Movie){
+        viewModelScope.launch {
+            repo.notFavFilm(movie.id);
+            val favMovies = repo.getFavFilms()
+            val newListMovies = mutableListOf<Movie>()
+            movies.value.map { movie ->
+                if(favMovies.any{isFav ->
+                        isFav.id == movie.id.toString()
+                    }){
+                    newListMovies.add(movie.copy(isFav = true))
+                }else{
+                    newListMovies.add(movie.copy(isFav = false))
+                }
+            }
+            movies.value = newListMovies
+            affichFavFilm()
+        }
+    }
+
+
+    fun addFavSerie(serie: Serie){
+        viewModelScope.launch {
+            repo.isFavSerie(serie);
+            val favSeries = repo.getFavSeries()
+            val newListSeries = mutableListOf<Serie>()
+            series.value.map { serie ->
+                if(favSeries.any{isFavSerie ->
+                        isFavSerie.id == serie.id.toString();
+                    }){
+                    val newFavSerie = serie.copy(isFav = true)
+                    newListSeries.add(newFavSerie)
+                }else{
+                    newListSeries.add(serie)
+                }
+            }
+            series.value = newListSeries
+            affichFavSeries()
+        }
+    }
+
+    fun deleteFavSerie(serie: Serie){
+        viewModelScope.launch {
+            repo.notFavSerie(serie.id);
+            val favSeries = repo.getFavSeries()
+
+            val newListSeries = mutableListOf<Serie>()
+
+            series.value.map { serie ->
+                if(favSeries.any{isFav ->
+                        isFav.id == serie.id.toString()
+                    }){
+                    newListSeries.add(serie.copy(isFav = true))
+                }else{
+                    newListSeries.add(serie.copy(isFav = false))
+                }
+            }
+            series.value = newListSeries
+            affichFavSeries()
+        }
+    }
+
+    fun addFavActeur(acteur: Result){
+        viewModelScope.launch {
+            repo.isFavActeur(acteur);
+            val favActeurs = repo.gatFavActeurs()
+            val newListActeurs = mutableListOf<Result>()
+            acteurs.value.map { acteur ->
+                if(favActeurs.any{isFavActeur ->
+                        isFavActeur.id == acteur.id.toString();
+                    }){
+                    val newFavActeur = acteur.copy(isFav = true)
+                    newListActeurs.add(newFavActeur)
+                }else{
+                    newListActeurs.add(acteur)
+                }
+            }
+            acteurs.value = newListActeurs
+            affichFavActeurs()
+        }
+    }
+
+    fun deleteFavActeur(acteur: Result){
+        viewModelScope.launch {
+            repo.notFavActeur(acteur.id);
+            val favActeurs = repo.gatFavActeurs()
+
+            val newListActeurs = mutableListOf<Result>()
+
+            acteurs.value.map { acteur ->
+                if(favActeurs.any{isFav ->
+                        isFav.id == acteur.id.toString()
+                    }){
+                    newListActeurs.add(acteur.copy(isFav = true))
+                }else{
+                    newListActeurs.add(acteur.copy(isFav = false))
+                }
+            }
+            acteurs.value = newListActeurs
+            affichFavActeurs()
+        }
+    }
+
+
 
     /*
     viewModelScope.launch {

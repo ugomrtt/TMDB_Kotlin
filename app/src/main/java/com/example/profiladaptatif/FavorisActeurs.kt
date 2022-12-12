@@ -22,12 +22,12 @@ import coil.compose.AsyncImage
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun Acteurs(viewModel: MainViewModel, navController: NavController) {
-    val acteurs by viewModel.acteurs.collectAsState()
+fun FavorisActeurs(viewModel: MainViewModel, navController: NavController) {
+    val favacteurs by viewModel.favActeurs.collectAsState()
 
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Open))
 
-    if (acteurs.isEmpty()) viewModel.affichActeurs()
+    if (favacteurs.isEmpty()) viewModel.affichActeurs()
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -39,7 +39,7 @@ fun Acteurs(viewModel: MainViewModel, navController: NavController) {
 
             LazyVerticalGrid(columns = GridCells.Adaptive(128.dp),
                 content = {
-                    items(acteurs) { acteur ->
+                    items(favacteurs) { acteur ->
                         Card(
                             modifier = Modifier
                                 .padding(4.dp)
@@ -52,39 +52,22 @@ fun Acteurs(viewModel: MainViewModel, navController: NavController) {
                                     contentAlignment = Alignment.TopEnd
                                 ) {
                                     AsyncImage(
-                                        model = "https://image.tmdb.org/t/p/w500/${acteur.profile_path}",
+                                        model = "https://image.tmdb.org/t/p/w500/${acteur.fiche.profile_path}",
                                         contentDescription = null
                                     )
                                     IconButton(onClick = {
-                                        if (acteur.isFav) {
-                                            viewModel.deleteFavActeur(acteur)
-                                        } else {
-                                            viewModel.addFavActeur(acteur)
-                                        }
+                                        viewModel.deleteFavActeur(acteur.fiche)
                                     }) {
-                                        if (acteur.isFav) {
-                                            Image(
-                                                painterResource(R.drawable.favfilled),
-                                                contentDescription = "Fav",
-                                                contentScale = ContentScale.Crop,
-                                                modifier = Modifier
-                                                    .size(25.dp)
-                                                    .fillMaxSize()
-                                            )
-                                        }
-                                        else{
-                                            Image(
-                                                painterResource(R.drawable.fav),
-                                                contentDescription = "Fav",
-                                                contentScale = ContentScale.Crop,
-                                                modifier = Modifier
-                                                    .size(25.dp)
-                                                    .fillMaxSize()
-                                            )
-                                        }
+                                        Image(
+                                            painterResource(R.drawable.favfilled),
+                                            contentDescription = "Fav",
+                                            contentScale = ContentScale.Crop,
+                                            modifier = Modifier
+                                                .size(25.dp)
+                                                .fillMaxSize())
                                     }
                                 }
-                                Text("${acteur.name}", fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                                Text("${acteur.fiche.name}", fontSize = 15.sp, fontWeight = FontWeight.Bold)
                             }
                         }
                     }

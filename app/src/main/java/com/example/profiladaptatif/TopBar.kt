@@ -20,20 +20,42 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun TopBar(onSearch: (t:String) -> Unit){
+fun TopBar(onSearch: (t:String) -> Unit, navController: NavController){
 
     var recherche:String by remember { mutableStateOf("") }
     var state by remember { mutableStateOf(true) }
+
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
 
     val keyboardController = LocalSoftwareKeyboardController.current
 
     if(state){
     TopAppBar(title = { Text("Fav'app") },
         actions = {
+            IconButton(onClick = {
+                if(currentDestination !== null && currentDestination.route === "listeFilms")
+                { navController.navigate("favorisFilms") }
+                else if(currentDestination !== null && currentDestination.route === "series")
+                { navController.navigate("favorisSeries") }
+                else if(currentDestination !== null && currentDestination.route === "acteurs")
+                { navController.navigate("favorisActeurs") }
+            })
+            {
+                Image(
+                    painterResource(R.drawable.fav),
+                    contentDescription = "Fav",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(25.dp)
+                        .fillMaxSize()
+                )
+            }
             IconButton(onClick = { state = !state }) {
                 Image(
                     painterResource(R.drawable.search),

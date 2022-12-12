@@ -54,6 +54,9 @@ class MainActivity : ComponentActivity() {
                     }
                 composable("series") { Series(viewmodel, navController) }
                 composable("acteurs") { Acteurs(viewmodel, navController) }
+                composable("favorisFilms") { FavorisFilms(viewmodel, navController) }
+                composable("favorisSeries") { FavorisSeries(viewmodel, navController) }
+                composable("favorisActeurs") { FavorisActeurs(viewmodel, navController) }
             }
 
 
