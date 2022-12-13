@@ -44,9 +44,9 @@ fun FavorisSeries(viewModel: MainViewModel, navController: NavController) {
                         Card(
                             modifier = Modifier
                                 .padding(4.dp)
-                                .clickable { navController.navigate("detailFilm/${serie.id}") }
+                                .clickable { navController.navigate("detailSerie/${serie.id}") }
                         ) {
-                            Column() {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Box(
                                     modifier = Modifier
                                         .fillMaxSize()

@@ -46,7 +46,7 @@ fun FavorisFilms(viewModel: MainViewModel, navController: NavController) {
                                 .padding(4.dp)
                                 .clickable { navController.navigate("detailFilm/${movie.id}") }
                         ) {
-                            Column() {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Box(
                                     modifier = Modifier
                                         .fillMaxSize()
