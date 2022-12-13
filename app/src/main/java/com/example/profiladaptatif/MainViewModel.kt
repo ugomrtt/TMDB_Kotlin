@@ -2,6 +2,11 @@ package com.example.profiladaptatif
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.profiladaptatif.com.example.profiladaptatif.Entities.ActeurEntity
+import com.example.profiladaptatif.com.example.profiladaptatif.Entities.FilmEntity
+import com.example.profiladaptatif.com.example.profiladaptatif.Entities.SerieEntity
+import com.example.profiladaptatif.com.example.profiladaptatif.Repo.Repository
+import com.example.profiladaptatif.com.example.profiladaptatif.Repo.TmdbAPI
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -73,7 +78,13 @@ class MainViewModel @Inject constructor(private val repo: Repository) : ViewMode
 
     fun searchMovies(search:String){
         viewModelScope.launch {
-            movies.value = service.searchFilm(apikey = apikey, searchtext = search).results
+            movies.value = repo.searchFilm(search)
+        }
+    }
+
+    fun searchSeries(search:String){
+        viewModelScope.launch {
+            series.value = repo.searchSeries(search)
         }
     }
 

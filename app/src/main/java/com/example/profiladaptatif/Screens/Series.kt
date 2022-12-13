@@ -34,7 +34,7 @@ fun Series(viewModel: MainViewModel, navController: NavController) {
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            TopBar({it -> viewModel.searchMovies(it)}, navController)
+            TopBar({it -> viewModel.searchSeries(it)}, navController)
 
         },
         content = {
@@ -47,7 +47,7 @@ fun Series(viewModel: MainViewModel, navController: NavController) {
                                 .padding(4.dp)
                                 .clickable { navController.navigate("detailSerie/${serie.id}") }
                         ) {
-                            Column() {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Box(
                                     modifier = Modifier
                                         .fillMaxSize()

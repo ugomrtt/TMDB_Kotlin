@@ -56,42 +56,48 @@ fun TopBar(onSearch: (t:String) -> Unit, navController: NavController){
                         .fillMaxSize()
                 )
             }
-            IconButton(onClick = { state = !state }) {
-                Image(
-                    painterResource(R.drawable.search),
-                    contentDescription = "Search",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(25.dp)
-                        .fillMaxSize()
-                )
+            if (currentDestination !== null && currentDestination.route !== "acteurs") {
+                IconButton(onClick = { state = !state }) {
+                    Image(
+                        painterResource(R.drawable.search),
+                        contentDescription = "Search",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(25.dp)
+                            .fillMaxSize()
+                    )
+                }
             }
         }
     )}
 
     else {
         TopAppBar(title = {
-            IconButton(onClick = { state = !state }) {
-                Image(
-                    painterResource(R.drawable.left),
-                    contentDescription = "Left",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(25.dp)
-                        .fillMaxSize()
+            if (currentDestination !== null && currentDestination.route !== "acteurs") {
+                IconButton(onClick = { state = !state }) {
+                    Image(
+                        painterResource(R.drawable.left),
+                        contentDescription = "Left",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(25.dp)
+                            .fillMaxSize()
+                    )
+                }
+                TextField(
+                    value = recherche,
+                    onValueChange = { newText ->
+                        recherche = newText
+                    },
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(onDone = {
+                        recherche = recherche
+                        keyboardController?.hide()
+                        onSearch(recherche)
+                    })
                 )
             }
-            TextField(value = recherche,
-                onValueChange = { newText ->
-                    recherche = newText },
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = {
-                    recherche = recherche
-                    keyboardController?.hide()
-                    onSearch(recherche)
-                })
-            )
-            }
+        }
         )
     }
 }

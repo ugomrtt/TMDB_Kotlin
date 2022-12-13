@@ -2,9 +2,11 @@ package com.example.profiladaptatif
 
 import android.content.Context
 import androidx.room.Room
-import com.example.myapplication.ActeurDao
-import com.example.myapplication.FilmDao
-import com.example.myapplication.SerieDao
+import com.example.profiladaptatif.com.example.profiladaptatif.DAO.ActeurDao
+import com.example.profiladaptatif.com.example.profiladaptatif.DAO.FilmDao
+import com.example.profiladaptatif.com.example.profiladaptatif.DAO.SerieDao
+import com.example.profiladaptatif.com.example.profiladaptatif.Repo.Repository
+import com.example.profiladaptatif.com.example.profiladaptatif.Repo.TmdbAPI
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -78,7 +80,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideRepository(api: TmdbAPI,dbFilm: FilmDao, dbSerie: SerieDao, dbActeur: ActeurDao): Repository {
+    fun provideRepository(api: TmdbAPI, dbFilm: FilmDao, dbSerie: SerieDao, dbActeur: ActeurDao): Repository {
         return Repository(api, dbFilm, dbSerie, dbActeur)
     }
 }
